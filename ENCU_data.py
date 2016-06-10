@@ -20,6 +20,8 @@ def get_players(country_url):
 
 if __name__ == '__main__':
 
+    fout = open('players', 'w')
+
     r = requests.get(url)
     print r.status_code
     print r.encoding
@@ -36,8 +38,15 @@ if __name__ == '__main__':
             country_url =  div.find('a', class_ = 'team-hub_link')['href']
             country = div.find('span', class_ = 'team-name_name').text
             target_url = ''.join((base_url, country_url))
-            print country
             player_names = get_players(target_url)
+            role_lines = [country]
+            for role in player_names.keys():
+                role_players = ','.join(player_names[role])
+                role_lines.append(unicode(role_players))
+                #print role_lines
+            output_line = '#'.join(role_lines)
+            fout.write(output_line.encode('utf-8') + '\n')
+    fout.close()
 
     #get_players(country_url)
     print cnt
