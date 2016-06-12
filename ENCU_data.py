@@ -23,16 +23,12 @@ if __name__ == '__main__':
     fout = open('players', 'w')
 
     r = requests.get(url)
-    print r.status_code
-    print r.encoding
-   # print r.content
     print type(r.content)
     r_content = BeautifulSoup(r.content)
     country_section = r_content.find_all('div', class_ = 'section--content clearfix')[0].find_all('div',class_ = 'row')[0:6]
     print len(country_section)
     cnt = 0
     for rows in country_section:
-        #break
         divs = rows.find_all('div', class_ = 'col-md-6 col-lg-6 col-sm-6 col-xs-12 teams--qualified')
         for div in divs:
             country_url =  div.find('a', class_ = 'team-hub_link')['href']
@@ -43,10 +39,7 @@ if __name__ == '__main__':
             for role in player_names.keys():
                 role_players = ','.join(player_names[role])
                 role_lines.append(unicode(role_players))
-                #print role_lines
             output_line = '#'.join(role_lines)
             fout.write(output_line.encode('utf-8') + '\n')
     fout.close()
-
-    #get_players(country_url)
     print cnt
